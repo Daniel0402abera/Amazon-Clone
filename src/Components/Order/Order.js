@@ -3,7 +3,7 @@ import "./Order.css";
 import moment from "moment";
 
 import CheckoutProduct from "./CheckoutProduct";
-// import CurrencyFormat from "react-currency-format";
+import CurrencyFormat from "react-currency-format";
 
 function Order({ order }) {
   return (
