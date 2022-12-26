@@ -5,6 +5,7 @@ import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PlaceIcon from "@mui/icons-material/Place";
 import { Link } from "react-router-dom";
+import {auth} from '../../firebase';
 
 import {useStateValue} from '../../Components/StateProvider/StateProvider'
 import {
@@ -19,7 +20,12 @@ import {
 } from "@coreui/react";
 
 function Header({ placeToDeliver }) {
-  const [{ basket }, dispatch] = useStateValue();
+  const [{ basket,user }, dispatch] = useStateValue();
+    const handleAuthenticaton = () => {
+      if (user) {
+        auth.signOut();
+      }
+    };
   return (
     <>
       <div className="header">
@@ -64,10 +70,14 @@ function Header({ placeToDeliver }) {
         </div>
 
         <div className="header__nav">
-          <Link to="/login">
-            <div className="header__option">
-              <span className="header__optionLineOne">Hello Guest</span>
-              <span className="header__optionLineTwo"></span>
+          <Link to={!user && "/login"}>
+            <div onClick={handleAuthenticaton} className="header__option">
+              <span className="header__optionLineOne">
+                Hello {!user ? "Guest" : user.email}
+              </span>
+              <span className="header__optionLineTwo">
+                {user ? "Sign Out" : "Sign In"}
+              </span>
             </div>
           </Link>
 

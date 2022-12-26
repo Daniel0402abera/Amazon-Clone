@@ -1,11 +1,38 @@
 import React, { useState } from "react";
 import "./Login.css";
-import { Link } from "react-router-dom";
+import { auth } from "../../firebase";
+import { signInWithEmailAndPassword,createUserWithEmailAndPassword} from 'firebase/auth';
+import { Link,Navigate,useNavigate } from "react-router-dom";
 
 
 function Login() {
+  const [email,setEmail]=useState('');
+  const [password,setPassword]=useState('');
+  const navigate = useNavigate();
   
+  const signIn = (e)=>{
+    e.preventDefault();
+    signInWithEmailAndPassword(auth,email,password)
+    .then((userCredential)=>{
+      if (userCredential)
+       navigate("/");
+    })
+    .catch((error)=>alert(error.message));
 
+  }
+ const register = (e) => {
+   e.preventDefault();
+  createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log(userCredential);
+        if (userCredential)
+         navigate("/");
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+      alert(errorMessage);
+    });
+ };
   return (
     <div className="login">
       <Link to="/">
@@ -20,12 +47,20 @@ function Login() {
 
         <form>
           <h5>E-mail</h5>
-          <input type="text" value />
+          <input type="text" 
+          value ={email}
+            onChange={(e)=>setEmail(e.target.value)}
+          />
 
           <h5>Password</h5>
-          <input type="password" />
+          <input type="password"
+          value={password}
+          onChange={(e)=>setPassword(e.target.value)} />
 
-          <button type="submit" className="login__signInButton">
+          <button
+           type="submit" 
+           onClick={signIn}
+          className="login__signInButton">
             Sign In
           </button>
         </form>
@@ -36,7 +71,10 @@ function Login() {
           Interest-Based Ads Notice.
         </p>
 
-        <button className="login__registerButton">
+        <button 
+        className="login__registerButton"
+        onClick={register}
+        >
           Create your Amazon Account
         </button>
       </div>
