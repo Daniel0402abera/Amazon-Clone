@@ -2,6 +2,7 @@ import React from "react";
 import "./Subtotal.css";
 import CurrencyFormat from "react-currency-format";
 import { useStateValue } from "../StateProvider/StateProvider";
+import {Link} from 'react-router-dom'
 
 
 function Subtotal() {
@@ -17,7 +18,6 @@ function Subtotal() {
         renderText={(value) => (
           <>
             <p>
-           
               Subtotal ({basket.length} items): <strong>{value}</strong>
             </p>
             <small className="subtotal__gift">
@@ -26,13 +26,14 @@ function Subtotal() {
           </>
         )}
         decimalScale={2}
-        value={getBasketTotal(basket)} 
+        value={getBasketTotal(basket)}
         displayType={"text"}
         thousandSeparator={true}
         prefix={"$"}
       />
-
-      <button onClick={getBasketTotal}>Proceed to Checkout</button>
+      <Link to="/payment">
+        <button className="payment-btn">Proceed to Checkout</button>
+      </Link>
     </div>
   );
 }
